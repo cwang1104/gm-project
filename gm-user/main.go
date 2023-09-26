@@ -1,6 +1,8 @@
 package main
 
 import (
+	"gm-user/pkg/config"
+	"gm-user/pkg/dao"
 	"log"
 	"os"
 
@@ -13,6 +15,13 @@ import (
 
 func main() {
 
+	err := config.Init()
+	if err != nil {
+		log.Panicln("config unmarshal failed", err)
+	}
+
+	dao.Init()
+
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Println("获取root路径失败", err)
@@ -20,12 +29,12 @@ func main() {
 	}
 
 	lc := &logs.LogConfig{
-		DebugFileName: dir + "/logs/debug/gm-debug.log",
-		InfoFileName:  dir + "/logs/info/gm-info.log",
-		WarnFileName:  dir + "/logs/error/gm-error.log",
-		MaxSize:       500,
-		MaxAge:        28,
-		MaxBackups:    3,
+		DebugFileName: dir + config.ZapConf().DebugFileName,
+		InfoFileName:  dir + config.ZapConf().InfoFileName,
+		WarnFileName:  dir + config.ZapConf().WarnFileName,
+		MaxSize:       config.ZapConf().MaxSize,
+		MaxAge:        config.ZapConf().MaxAge,
+		MaxBackups:    config.ZapConf().MaxBackup,
 	}
 
 	err = logs.InitLogger(lc)
@@ -36,6 +45,6 @@ func main() {
 	r := gin.Default()
 
 	router.InitRouter(r)
-	common.Run(r, ":8080", "gm-user")
+	common.Run(r, config.ServerConf().GetAddr(), config.ServerConf().Name)
 
 }

@@ -21,4 +21,5 @@
 
 # Go workspace file
 go.work
-./gm-user/logs
+/gm-user/logs
+

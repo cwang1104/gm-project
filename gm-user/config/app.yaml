@@ -1,0 +1,21 @@
+server:
+  name: "gm-user"
+  port: 8080
+
+zap:
+  debugFileName: "/logs/debug/gm-debug.log"
+  infoFileName:  "/logs/info/gm-info.log"
+  warnFileName:  "/logs/error/gm-error.log"
+  maxSize: 500
+  maxAge: 28
+  maxBackup: 3
+
+redis:
+  address:
+    - 192.168.254.128:16379
+  max_idle: 200
+  max_active: 200
+  idle_timeout: 240
+  username:
+  password: 'milowang123'
+  cluster: False

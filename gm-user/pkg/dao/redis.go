@@ -2,6 +2,7 @@ package dao
 
 import (
 	"context"
+	"gm-user/pkg/config"
 	"time"
 
 	redis "github.com/redis/go-redis/v9"
@@ -13,16 +14,17 @@ type RedisCache struct {
 	rdb *redis.Client
 }
 
-func init() {
+func Init() {
+	cfg := config.RedisConf()
 	opt := redis.Options{
-		Addr:     "192.168.254.128:16379",
-		DB:       0,
-		Username: "",
-		Password: "milowang123",
-		//PoolSize:        ,
-		//MinIdleConns:    cfg.MaxIdle,
-		//ConnMaxIdleTime: time.Second * time.Duration(cfg.MaxIdle),
-		//ConnMaxLifetime: time.Second * time.Duration(cfg.MaxActive),
+		Addr:            cfg.Address[0],
+		DB:              0,
+		Username:        "",
+		Password:        cfg.Password,
+		PoolSize:        cfg.MaxActive,
+		MinIdleConns:    cfg.MaxIdle,
+		ConnMaxIdleTime: time.Second * time.Duration(cfg.MaxIdle),
+		ConnMaxLifetime: time.Second * time.Duration(cfg.MaxActive),
 	}
 
 	cli := redis.NewClient(&opt)
