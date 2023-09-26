@@ -1,13 +1,13 @@
 package main
 
 import (
-	"gm-user/pkg/config"
-	"gm-user/pkg/dao"
 	"log"
 	"os"
 
 	common "gm-common"
 	"gm-common/logs"
+	"gm-user/pkg/config"
+	"gm-user/pkg/dao"
 	"gm-user/router"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,10 @@ func main() {
 		log.Panicln("config unmarshal failed", err)
 	}
 
-	dao.Init()
+	err = dao.RedisInit()
+	if err != nil {
+		log.Panicln("redis init failed", err)
+	}
 
 	dir, err := os.Getwd()
 	if err != nil {

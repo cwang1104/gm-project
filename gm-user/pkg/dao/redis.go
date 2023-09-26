@@ -14,7 +14,7 @@ type RedisCache struct {
 	rdb *redis.Client
 }
 
-func Init() {
+func RedisInit() error {
 	cfg := config.RedisConf()
 	opt := redis.Options{
 		Addr:            cfg.Address[0],
@@ -32,6 +32,11 @@ func Init() {
 	Rdb = &RedisCache{
 		rdb: cli,
 	}
+
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*3)
+	defer cancel()
+
+	return cli.Ping(ctx).Err()
 }
 
 func (r *RedisCache) Put(ctx context.Context, key, value string, expire time.Duration) error {
