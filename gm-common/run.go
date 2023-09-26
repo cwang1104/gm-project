@@ -3,6 +3,7 @@ package common
 import (
 	"context"
 	"errors"
+	"go.uber.org/zap"
 	"log"
 	"net/http"
 	"os"
@@ -20,10 +21,10 @@ func Run(r *gin.Engine, addr, serverName string) {
 	}
 
 	go func() {
+		zap.L().Info("server running", zap.String("serverName", serverName), zap.String("addr", addr))
 		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			log.Fatalln("http listen failed;err:", err)
+			zap.L().Fatal("http listen failed", zap.Error(err))
 		}
-		log.Printf("%s running in %s", serverName, addr)
 	}()
 
 	//只有sigint sigterm 两个信号可以被监听

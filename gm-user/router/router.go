@@ -23,6 +23,5 @@ func (*RegisterRouter) Route(ro Router, r *gin.Engine) {
 
 func InitRouter(r *gin.Engine) {
 	rg := New()
-	r.Group("/api")
 	rg.Route(&user.RouterUser{}, r)
 }

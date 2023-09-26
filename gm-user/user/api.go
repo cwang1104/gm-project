@@ -6,7 +6,7 @@ import (
 	"gm-user/pkg/dao"
 	"gm-user/pkg/model"
 	"gm-user/pkg/repo"
-	"log"
+	"go.uber.org/zap"
 	"net/http"
 	"time"
 
@@ -36,12 +36,12 @@ func (h *HandlerUser) GetCaptcha(c *gin.Context) {
 	//todo: 接入短信验证码发送平台，并存入缓存中
 	go func() {
 		time.Sleep(time.Second * 2)
-		log.Printf("%s 调用短信平台,发送验证码", mobile)
+		zap.L().Info("调用短信平台,发送验证码", zap.String("mobile", mobile))
 		ctx, cancel := context.WithTimeout(context.Background(), time.Second*2)
 		defer cancel()
 		err := h.cache.Put(ctx, "REGISTER_"+mobile, testCode, time.Minute*15)
 		if err != nil {
-			log.Println("验证码存储错误:", err)
+			zap.L().Warn("验证码存储错误", zap.Error(err))
 		}
 	}()
 
