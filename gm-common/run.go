@@ -29,6 +29,7 @@ func Run(r *gin.Engine, addr, serverName string) {
 	//只有sigint sigterm 两个信号可以被监听
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
 
 	ctx, cancel := context.WithTimeout(context.TODO(), 5*time.Second)
 	defer cancel()
@@ -36,6 +37,8 @@ func Run(r *gin.Engine, addr, serverName string) {
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("%s shtdown,case by %s", addr, err.Error())
 	}
+
+	log.Printf("%s is shutting down", serverName)
 
 	select {
 	case <-ctx.Done():
