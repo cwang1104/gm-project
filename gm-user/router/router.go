@@ -2,7 +2,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"gm-user/user"
+	"gm-user/api/user"
 )
 
 // Router 路由接口
