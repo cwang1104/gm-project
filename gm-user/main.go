@@ -48,6 +48,12 @@ func main() {
 	r := gin.Default()
 
 	router.InitRouter(r)
-	common.Run(r, config.ServerConf().GetAddr(), config.ServerConf().Name)
+
+	server := router.RegisterGrpc()
+	stop := func() {
+		server.Stop()
+	}
+
+	common.Run(r, config.ServerConf().GetAddr(), config.ServerConf().Name, stop)
 
 }

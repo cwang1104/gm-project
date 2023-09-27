@@ -19,3 +19,8 @@ redis:
   username:
   password: 'milowang123'
   cluster: False
+
+
+grpc:
+  name: gm-user
+  addr: 127.0.0.1:8081

@@ -14,7 +14,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Run(r *gin.Engine, addr, serverName string) {
+func Run(r *gin.Engine, addr, serverName string, stop func()) {
 	srv := &http.Server{
 		Addr:    addr,
 		Handler: r,
@@ -37,6 +37,9 @@ func Run(r *gin.Engine, addr, serverName string) {
 
 	if err := srv.Shutdown(ctx); err != nil {
 		log.Fatalf("%s shtdown,case by %s", addr, err.Error())
+	}
+	if stop != nil {
+		stop()
 	}
 
 	log.Printf("%s is shutting down", serverName)
