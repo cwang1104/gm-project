@@ -3,8 +3,8 @@ package user
 import (
 	"context"
 	common "gm-common"
+	"gm-common/errs"
 	"gm-user/pkg/dao"
-	"gm-user/pkg/model"
 	"gm-user/pkg/repo"
 	"gm-user/pkg/service/login.service.v1"
 	"net/http"
@@ -28,7 +28,7 @@ func (h *HandlerUser) GetCaptcha(c *gin.Context) {
 
 	mobile := c.PostForm("mobile")
 	if !common.VerifyMobile(mobile) {
-		c.JSON(http.StatusOK, resp.Fail(model.IllegalMobile, "手机号不合法"))
+		c.JSON(http.StatusOK, resp.Fail(2001, "手机号不合法"))
 		return
 	}
 
@@ -40,7 +40,8 @@ func (h *HandlerUser) GetCaptcha(c *gin.Context) {
 	})
 
 	if err != nil {
-		c.JSON(http.StatusOK, resp.Fail(2001, err.Error()))
+		code, msg := errs.ParseGrpcError(err)
+		c.JSON(http.StatusOK, resp.Fail(code, msg))
 		return
 	}
 

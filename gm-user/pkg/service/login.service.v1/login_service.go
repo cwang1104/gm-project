@@ -2,9 +2,9 @@ package login_service
 
 import (
 	"context"
-	"errors"
 	common "gm-common"
 	"gm-user/pkg/dao"
+	"gm-user/pkg/model"
 	"gm-user/pkg/repo"
 	"go.uber.org/zap"
 	"time"
@@ -25,7 +25,7 @@ func (l *LoginService) GetCaptcha(ctx context.Context, msg *CaptchaMessage) (*Ca
 
 	mobile := msg.Mobile
 	if !common.VerifyMobile(msg.Mobile) {
-		return nil, errors.New("手机号不合法")
+		return nil, model.IllegalMobile
 	}
 
 	testCode := "123456"
