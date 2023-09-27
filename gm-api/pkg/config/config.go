@@ -10,6 +10,7 @@ type globalConfig struct {
 	Server *server      `yaml:"server"`
 	Redis  *redisConfig `yaml:"redis"`
 	Zap    *zap         `yaml:"zap"`
+	Grpc   *grpc        `yaml:"grpc"`
 }
 
 var globalConf = new(globalConfig)
@@ -43,4 +44,8 @@ func RedisConf() *redisConfig {
 
 func ZapConf() *zap {
 	return globalConf.Zap
+}
+
+func GrpcConf() *grpc {
+	return globalConf.Grpc
 }

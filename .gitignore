@@ -22,4 +22,5 @@
 # Go workspace file
 go.work
 /gm-user/logs
+/gm-api/logs
 

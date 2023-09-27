@@ -1,0 +1,12 @@
+server:
+  name: "gm-api"
+  port: 8080
+
+zap:
+  debugFileName: "/logs/debug/gm-debug.log"
+  infoFileName:  "/logs/info/gm-info.log"
+  warnFileName:  "/logs/error/gm-error.log"
+  maxSize: 500
+  maxAge: 28
+  maxBackup: 3
+

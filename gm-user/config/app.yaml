@@ -1,11 +1,11 @@
 server:
   name: "gm-user"
-  port: 8080
+  port: 8081
 
 zap:
-  debugFileName: "/logs/debug/gm-debug.log"
-  infoFileName:  "/logs/info/gm-info.log"
-  warnFileName:  "/logs/error/gm-error.log"
+  debugFileName: "/logs/debug/gm-user-debug.log"
+  infoFileName:  "/logs/info/gm-user-info.log"
+  warnFileName:  "/logs/error/gm-user-error.log"
   maxSize: 500
   maxAge: 28
   maxBackup: 3
@@ -20,7 +20,3 @@ redis:
   password: 'milowang123'
   cluster: False
 
-
-grpc:
-  name: gm-user
-  addr: 127.0.0.1:8081

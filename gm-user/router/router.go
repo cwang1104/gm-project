@@ -39,7 +39,7 @@ type grpcConfig struct {
 
 func RegisterGrpc() *grpc.Server {
 	c := grpcConfig{
-		Addr: config.GrpcConf().Addr,
+		Addr: config.ServerConf().GetAddr(),
 		RegisterFunc: func(server *grpc.Server) {
 			login_service.RegisterLoginServiceServer(server, &login_service.LoginService{
 				Cache: dao.Rdb,
@@ -50,18 +50,16 @@ func RegisterGrpc() *grpc.Server {
 	s := grpc.NewServer()
 	c.RegisterFunc(s)
 
-	lis, err := net.Listen("tcp", config.GrpcConf().Addr)
+	lis, err := net.Listen("tcp", config.ServerConf().GetAddr())
 	if err != nil {
 		zap.L().Warn("grpc cannot listen", zap.Error(err))
 	}
 
-	go func() {
-		err = s.Serve(lis)
-		if err != nil {
-			zap.L().Warn("grpc server start failed", zap.Error(err))
-			return
-		}
-	}()
+	err = s.Serve(lis)
+	if err != nil {
+		zap.L().Warn("grpc server start failed", zap.Error(err))
+		return nil
+	}
 
 	return s
 }
